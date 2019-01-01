@@ -1,3 +1,4 @@
+#example
 kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
 kubectl expose deployment hello-minikube  --type=NodePort
 kubectl get pod
@@ -5,13 +6,14 @@ curl $(minikube service hello-minikube --url)
 kubectl delete deployment hello-minikube
 
 
-
+#deployment
 kubectl apply -f ./deployment.yaml
 kubectl expose deployment tomcat-deployment --type=NodePort
 minikube service tomcat-deployment --url
 curl <URL>
 
 
+#expose / access
 kubectl get pods
 kubectl get pods [pod name]
  
@@ -33,3 +35,23 @@ kubectl run hazelcast --image=hazelcast/hazelcast --port=5701
 # the hazelcast docker image has been moved to hazelcast/hazelcast (https://hub.docker.com/r/hazelcast/hazelcast)
  
 kubectl describe pod
+
+
+#scale
+kubectl scale --replicas=4 deployment/tomcat-deployment 
+ 
+kubectl expose deployment tomcat-deployment --type=NodePort
+kubectl expose deployment tomcat-deployment --type=LoadBalancer --port=8080 --target-port=8080 --name tomcat-load-balancer
+ 
+kubectl describe services tomcat-load-balancer
+
+#Deployments Commands
+kubectl get deployments
+kubectl rollout status
+kubectl set image
+kubectl rollout history
+
+
+#Web interface
+kubectl proxy
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
